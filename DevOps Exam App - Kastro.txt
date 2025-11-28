@@ -258,7 +258,7 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
-                        withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                        withDockerRegistry(credentialsId: 'docker') {
                             sh "docker build -t ${DOCKER_IMAGE} ."
                             // Push the image to Docker Hub if needed
                             sh "docker push ${DOCKER_IMAGE}"
@@ -272,7 +272,7 @@ pipeline {
         stage('Docker Scout Image Analysis') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    withDockerRegistry(credentialsId: 'docker') {
                         sh "docker-scout quickview ${DOCKER_IMAGE}"
                         sh "docker-scout cves ${DOCKER_IMAGE}"
                         sh "docker-scout recommendations ${DOCKER_IMAGE}"
@@ -338,4 +338,5 @@ pipeline {
             archiveArtifacts artifacts: 'trivy-fs-report.html', allowEmptyArchive: true
         }
     }
+
 }
